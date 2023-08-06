@@ -1,4 +1,4 @@
-class HTMLNanoframework:
+class HTMLElement:
     def __init__(self, name, value, attributes=None):
         if attributes is None:
             attributes = {}
@@ -7,7 +7,7 @@ class HTMLNanoframework:
         self.attributes = attributes
 
 
-att = HTMLNanoframework("h1", "Hello World", {"id": "test"})
+att = HTMLElement("h1", "Hello World", {"id": "test"})
 
 print(att.name)
 print(att.value)
