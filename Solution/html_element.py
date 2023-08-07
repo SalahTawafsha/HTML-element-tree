@@ -50,6 +50,11 @@ class HtmlElement:
     @classmethod
     def append(cls, element: 'HtmlElement', new_element: 'HtmlElement') -> None:
         """ add new Element to element as a child """
+        if "id" in new_element.attributes:
+            if new_element.attributes["id"] in HtmlElement.usedIDs:
+                raise ValueError("ID already used")
+            HtmlElement.usedIDs.add(new_element.attributes["id"])
+
         element.children.append(new_element)
 
     @classmethod

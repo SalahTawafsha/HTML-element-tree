@@ -50,6 +50,13 @@ def test_append() -> None:
     assert len(root.children) == 2
 
 
+def test_append_existed_id() -> None:
+    with pytest.raises(ValueError):
+        root = HtmlElement("h1", "Hello World", {"id": "title"})
+        child = HtmlElement("h1", "Hello World", {"id": "title"})
+        HtmlElement.append(root, child)
+
+
 def test_render() -> None:
     string: str = HtmlElement.render(root_element)
     assert string == "<div class='testing'>\n\t<h1>\n\t\tHello World\n\t</h1>\n\t<p>\n\t\ttest\n\t</p>\n\t<h2 " \
