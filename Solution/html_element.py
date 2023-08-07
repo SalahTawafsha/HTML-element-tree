@@ -1,7 +1,10 @@
+""" class that represent nano HTML framework"""
 from typing import Union
 
 
-class HTMLElement:
+class HtmlElement:
+    """ this class has name, attributes and children"""
+
     html_tags: set = {
         "a", "abbr", "address", "area", "article", "aside", "audio", "b", "base", "bdi",
         "bdo", "blockquote", "body", "br", "button", "canvas", "caption", "cite", "code",
@@ -18,16 +21,16 @@ class HTMLElement:
     }
     usedIDs: set = set()
 
-    def __init__(self, name: str, value: Union[str, 'HTMLElement', list['HTMLElement']],
+    def __init__(self, name: str, value: Union[str, 'HtmlElement', list['HtmlElement']],
                  attributes: dict = None) -> None:
         if attributes is None:
-            attributes = dict()
-        if name not in HTMLElement.html_tags:
+            attributes = {}
+        if name not in HtmlElement.html_tags:
             raise ValueError("Invalid HTML tag")
         if "id" in attributes:
-            if attributes["id"] in HTMLElement.usedIDs:
+            if attributes["id"] in HtmlElement.usedIDs:
                 raise ValueError("ID already used")
-            HTMLElement.usedIDs.add(attributes["id"])
+            HtmlElement.usedIDs.add(attributes["id"])
 
         self.name = name
         self.attributes = attributes
@@ -45,19 +48,20 @@ class HTMLElement:
         return string + '>'
 
     @classmethod
-    def append(cls, element: 'HTMLElement', new_element: 'HTMLElement') -> None:
+    def append(cls, element: 'HtmlElement', new_element: 'HtmlElement') -> None:
+        """ add new Element to element as a child """
         element.children.append(new_element)
 
     @classmethod
-    def render(cls, element: 'HTMLElement', level: int = 0) -> str:
-
+    def render(cls, element: 'HtmlElement', level: int = 0) -> str:
+        """ print element tree as HTML string """
         output = "\t" * level
         level += 1
 
         if hasattr(element, "children"):
             output += f"{element}\n"
             for child in element.children:
-                output += HTMLElement.render(child, level)
+                output += HtmlElement.render(child, level)
             output += "\t" * (level - 1)
             output += f"</{element.name}>\n"
         else:
@@ -66,33 +70,37 @@ class HTMLElement:
         return output
 
     @classmethod
-    def render_html(cls, element: 'HTMLElement') -> str:
+    def render_html(cls, element: 'HtmlElement') -> str:
+        """ generate full HTML file that ready to run """
         html_code: str = '''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
 </head>'''
         html_code += "\n<body>"
-        html_code += HTMLElement.render(element)
+        html_code += HtmlElement.render(element)
         html_code += "</body>\n</html>"
         return html_code
 
     @classmethod
-    def find_by_tag(cls, element: 'HTMLElement', tag_name: str, result: list = None) -> list:
+    def find_by_tag(cls, element: 'HtmlElement', tag_name: str, result: list = None) -> list:
+        """ get all element by tagName """
         if result is None:
             result = []
 
-        if hasattr(element, "name") and element.name.__eq__(tag_name):
+        if hasattr(element, "name") and element.name == tag_name:
             result.append(element)
 
         if hasattr(element, "children"):
             for child in element.children:
-                HTMLElement.find_by_tag(child, tag_name, result)
+                HtmlElement.find_by_tag(child, tag_name, result)
 
         return result
 
     @classmethod
-    def find_by_attribute(cls, element: 'HTMLElement', attribute: str, value: str, result: list = None) -> list:
+    def find_by_attribute(cls, element: 'HtmlElement',
+                          attribute: str, value: str, result: list = None) -> list:
+        """ get all elements that has an attribute value """
         if result is None:
             result = []
 
@@ -101,6 +109,6 @@ class HTMLElement:
 
         if hasattr(element, "children"):
             for child in element.children:
-                HTMLElement.find_by_attribute(child, attribute, value, result)
+                HtmlElement.find_by_attribute(child, attribute, value, result)
 
         return result
