@@ -1,5 +1,5 @@
 class HTMLElement:
-    html_tags = [
+    html_tags = {
         "a", "abbr", "address", "area", "article", "aside", "audio", "b", "base", "bdi",
         "bdo", "blockquote", "body", "br", "button", "canvas", "caption", "cite", "code",
         "col", "colgroup", "data", "datalist", "dd", "del", "details", "dfn", "dialog",
@@ -12,7 +12,7 @@ class HTMLElement:
         "source", "span", "strong", "style", "sub", "summary", "sup", "table", "tbody",
         "td", "template", "textarea", "tfoot", "th", "thead", "time", "title", "tr",
         "track", "u", "ul", "var", "video", "wbr",
-    ]
+    }
     usedIDs = set()
 
     def __init__(self, name, value, attributes=None) -> None:
@@ -26,13 +26,61 @@ class HTMLElement:
             HTMLElement.usedIDs.add(attributes["id"])
 
         self.name = name
-        self.value = value
         self.attributes = attributes
         self.children = []
+        if isinstance(value, list):
+            for val in value:
+                self.children.append(val)
+        else:
+            self.children.append(value)
 
+    def __str__(self) -> str:
+        return self.name
 
-att = HTMLElement("h1", "Hello World", {"id": "test", "class": "testing"})
+    @classmethod
+    def append(cls, element, new_element) -> None:
+        element.children.append(new_element)
 
-print(att.name)
-print(att.value)
-print(att.attributes)
+    @classmethod
+    def render(cls, element, level=0):
+        if not element:
+            return
+
+        print("\t" * level, end="")
+        level += 1
+
+        if hasattr(element, "children"):
+            print(f"<{element}>")
+            for child in element.children:
+                HTMLElement.render(child, level)
+            print("\t" * (level - 1), end="")
+            print(f"</{element}>")
+        else:
+            print(element)
+
+    @classmethod
+    def render_html(cls, element):
+        html_code = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>'''
+        print(html_code)
+        print("<body>")
+        HTMLElement.render(element)
+        print("</body>\n</html>")
+
+    @classmethod
+    def find_by_tag(cls, element, tag_name, result=None) -> list:
+        if result is None:
+            result = []
+
+        if not element:
+            return result
+
+        if hasattr(element, "name") and element.name == tag_name:
+            result.append(element)
+
+        if hasattr(element, "children"):
+            for child in element.children:
+                HTMLElement.find_by_tag(child, tag_name, result)
