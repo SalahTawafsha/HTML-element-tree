@@ -42,7 +42,7 @@ class HTMLElement:
         element.children.append(new_element)
 
     @classmethod
-    def render(cls, element, level=0):
+    def render(cls, element, level: int = 0):
         if not element:
             return
 
