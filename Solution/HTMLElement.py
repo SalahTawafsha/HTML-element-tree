@@ -14,7 +14,7 @@ class HTMLElement:
         "rt", "rtc", "ruby", "s", "samp", "script", "section", "select", "slot", "small",
         "source", "span", "strong", "style", "sub", "summary", "sup", "table", "tbody",
         "td", "template", "textarea", "tfoot", "th", "thead", "time", "title", "tr",
-        "track", "u", "ul", "var", "video", "wbr",
+        "track", "u", "ul", "var", "video", "wbr"
     }
     usedIDs: set = set()
 
@@ -50,8 +50,6 @@ class HTMLElement:
 
     @classmethod
     def render(cls, element: 'HTMLElement', level: int = 0) -> str:
-        if not element:
-            return ""
 
         output = "\t" * level
         level += 1
