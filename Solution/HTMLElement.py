@@ -15,7 +15,7 @@ class HTMLElement:
     ]
     usedIDs = set()
 
-    def __init__(self, name, value, attributes=None):
+    def __init__(self, name, value, attributes=None) -> None:
         if attributes is None:
             attributes = {}
         if name not in HTMLElement.html_tags:
@@ -28,6 +28,7 @@ class HTMLElement:
         self.name = name
         self.value = value
         self.attributes = attributes
+        self.children = []
 
 
 att = HTMLElement("h1", "Hello World", {"id": "test", "class": "testing"})
