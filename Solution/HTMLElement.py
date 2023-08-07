@@ -49,33 +49,35 @@ class HTMLElement:
         element.children.append(new_element)
 
     @classmethod
-    def render(cls, element: 'HTMLElement', level: int = 0):
+    def render(cls, element: 'HTMLElement', level: int = 0) -> str:
         if not element:
-            return
+            return ""
 
-        print("\t" * level, end="")
+        output = "\t" * level
         level += 1
 
         if hasattr(element, "children"):
-            print(f"{element}")
+            output += f"{element}\n"
             for child in element.children:
-                HTMLElement.render(child, level)
-            print("\t" * (level - 1), end="")
-            print(f"</{element.name}>")
+                output += HTMLElement.render(child, level)
+            output += "\t" * (level - 1)
+            output += f"</{element.name}>\n"
         else:
-            print(element)
+            output += f"{element}\n"
+
+        return output
 
     @classmethod
-    def render_html(cls, element: 'HTMLElement'):
+    def render_html(cls, element: 'HTMLElement') -> str:
         html_code: str = '''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
 </head>'''
-        print(html_code)
-        print("<body>")
-        HTMLElement.render(element)
-        print("</body>\n</html>")
+        html_code += "\n<body>"
+        html_code += HTMLElement.render(element)
+        html_code += "</body>\n</html>"
+        return html_code
 
     @classmethod
     def find_by_tag(cls, element: 'HTMLElement', tag_name: str, result: list = None) -> list:

@@ -41,11 +41,11 @@ def test_append() -> None:
 
 
 def test_render() -> None:
-    HTMLElement.render(root_element)
+    string: str = HTMLElement.render(root_element)
 
 
 def test_render_html() -> None:
-    HTMLElement.render_html(root_element)
+    string: str = HTMLElement.render_html(root_element)
 
 
 def test_find_by_tag() -> None:
