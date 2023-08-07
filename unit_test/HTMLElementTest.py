@@ -33,6 +33,16 @@ def test_no_attributes() -> None:
     assert element1.attributes == {}
 
 
+def test_html_element_value() -> None:
+    element = HTMLElement("div", HTMLElement("h1", "hello"))
+    assert len(element.children) == 1
+
+
+def test_html_element_list() -> None:
+    element = HTMLElement("div", arr)
+    assert len(element.children) == 2
+
+
 def test_append() -> None:
     root = HTMLElement("h1", "Hello World", {"class": "testing"})
     child = HTMLElement("h1", "Hello World", {"class": "testing"})
