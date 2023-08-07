@@ -42,10 +42,16 @@ def test_append() -> None:
 
 def test_render() -> None:
     string: str = HTMLElement.render(root_element)
+    assert string == "<div class='testing'>\n\t<h1>\n\t\tHello World\n\t</h1>\n\t<p>\n\t\ttest\n\t</p>\n\t<h2 " \
+                     "class='testing'>\n\t\tHello World\n\t\t<h2>\n\t\t\tHello World\n\t\t</h2>\n\t</h2>\n</div>\n"
 
 
 def test_render_html() -> None:
     string: str = HTMLElement.render_html(root_element)
+    assert string == "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n</head>\n<body><div " \
+                     "class=\'testing\'>\n\t<h1>\n\t\tHello World\n\t</h1>\n\t<p>\n\t\ttest\n\t</p>\n\t<h2 " \
+                     "class=\'testing\'>\n\t\tHello World\n\t\t<h2>\n\t\t\tHello " \
+                     "World\n\t\t</h2>\n\t</h2>\n</div>\n</body>\n</html>"
 
 
 def test_find_by_tag() -> None:
