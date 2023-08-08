@@ -5,27 +5,34 @@ from typing import Union
 class HtmlElement:
     """ this class has name, attributes and children"""
 
-    html_tags: set = {
-        "a", "abbr", "address", "area", "article", "aside", "audio", "b", "base", "bdi",
-        "bdo", "blockquote", "body", "br", "button", "canvas", "caption", "cite", "code",
-        "col", "colgroup", "data", "datalist", "dd", "del", "details", "dfn", "dialog",
-        "div", "dl", "dt", "em", "embed", "fieldset", "figcaption", "figure", "footer",
-        "form", "h1", "h2", "h3", "h4", "h5", "h6", "head", "header", "hr", "html", "i",
-        "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "link", "main",
-        "map", "mark", "meta", "meter", "nav", "noscript", "object", "ol", "optgroup",
-        "option", "output", "p", "param", "picture", "pre", "progress", "q", "rb", "rp",
-        "rt", "rtc", "ruby", "s", "samp", "script", "section", "select", "slot", "small",
-        "source", "span", "strong", "style", "sub", "summary", "sup", "table", "tbody",
-        "td", "template", "textarea", "tfoot", "th", "thead", "time", "title", "tr",
-        "track", "u", "ul", "var", "video", "wbr"
+    # Separating tags into sets based on whether they require a closing tag or not
+    tag_with_close: set = {
+        "a", "abbr", "address", "article", "aside", "audio", "b", "bdi", "bdo",
+        "blockquote", "button", "canvas", "caption", "cite", "code", "data",
+        "datalist", "dd", "del", "details", "dfn", "dialog", "div", "dl", "dt",
+        "em", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2",
+        "h3", "h4", "h5", "h6", "header", "i", "iframe", "ins", "kbd", "label",
+        "legend", "li", "main", "mark", "menu", "nav", "object", "ol", "optgroup",
+        "option", "output", "p", "pre", "progress", "q", "ruby", "s", "samp",
+        "section", "select", "small", "span", "strong", "sub", "summary", "sup",
+        "table", "tbody", "td", "template", "textarea", "tfoot", "th", "thead",
+        "time", "title", "tr", "ul", "var", "video"
     }
+
+    tag_without_close: set = {
+        "area", "base", "br", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"
+    }
+
+    print("Tags with closing tags:", tag_with_close)
+    print("Tags without closing tags:", tag_without_close)
+
     usedIDs: set = set()
 
     def __init__(self, name: str, value: Union[str, 'HtmlElement', list['HtmlElement']],
                  attributes: dict = None) -> None:
         if attributes is None:
             attributes = {}
-        if name not in HtmlElement.html_tags:
+        if name not in HtmlElement.tag_with_close and name not in HtmlElement.tag_without_close:
             raise ValueError("Invalid HTML tag")
         if "id" in attributes:
             if attributes["id"] in HtmlElement.usedIDs:
@@ -67,8 +74,9 @@ class HtmlElement:
             output += f"{element}\n"
             for child in element.children:
                 output += HtmlElement.render(child, level)
-            output += "\t" * (level - 1)
-            output += f"</{element.name}>\n"
+            if element.name in HtmlElement.tag_with_close:
+                output += "\t" * (level - 1)
+                output += f"</{element.name}>\n"
         else:
             output += f"{element}\n"
 

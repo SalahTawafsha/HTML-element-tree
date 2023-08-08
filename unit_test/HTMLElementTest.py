@@ -1,11 +1,6 @@
 import pytest
-from HTML.Solution.html_element import HtmlElement
-
-arr = [HtmlElement("h1", "Hello World"), HtmlElement("p", "test")]
-root_element = HtmlElement("div", arr, {"class": "testing"})
-child_element = HtmlElement("h2", "Hello World", {"class": "testing"})
-HtmlElement.append(root_element, child_element)
-HtmlElement.append(child_element, HtmlElement("h2", "Hello World"))
+from HTML.solution.html_element import HtmlElement
+from HTML.solution.subset import form
 
 
 def test_duplicate_id() -> None:
@@ -39,7 +34,8 @@ def test_html_element_value() -> None:
 
 
 def test_html_element_list() -> None:
-    element = HtmlElement("div", arr)
+    element = HtmlElement("div", form)
+    HtmlElement.append(element, HtmlElement("br", ""))
     assert len(element.children) == 2
 
 
@@ -58,24 +54,40 @@ def test_append_existed_id() -> None:
 
 
 def test_render() -> None:
-    string: str = HtmlElement.render(root_element)
-    assert string == "<div class='testing'>\n\t<h1>\n\t\tHello World\n\t</h1>\n\t<p>\n\t\ttest\n\t</p>\n\t<h2 " \
-                     "class='testing'>\n\t\tHello World\n\t\t<h2>\n\t\t\tHello World\n\t\t</h2>\n\t</h2>\n</div>\n"
+    string: str = HtmlElement.render(form)
+    assert string == "<form method='post' action='login.php'>\n\t<h3>\n\t\tLog " \
+                     "in\n\t</h3>\n\t<hr>\n\t\t\n\t<table>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t<label for='email' " \
+                     "class='my-label'>\n\t\t\t\t\tEmail: \n\t\t\t\t</label>\n\t\t\t</td>" \
+                     "\n\t\t\t<td>\n\t\t\t\t<input " \
+                     "type='text' name='email' " \
+                     "id='email'>\n\t\t\t\t\t\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t<label " \
+                     "for='password' class='my-label'>\n\t\t\t\t\tPassword: " \
+                     "\n\t\t\t\t</label>\n\t\t\t</td>\n\t\t\t<td>\n\t\t\t\t<input type='password' name='password' " \
+                     "id='password'>\n\t\t\t\t\t\n\t\t\t</td>\n\t\t</tr>\n\t</table>\n\t<br>\n\t\t\n\t<input " \
+                     "type='submit' value='Log in'>\n\t\t\n</form>\n"
 
 
 def test_render_html() -> None:
-    string: str = HtmlElement.render_html(root_element)
-    assert string == "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n</head>\n<body><div " \
-                     "class=\'testing\'>\n\t<h1>\n\t\tHello World\n\t</h1>\n\t<p>\n\t\ttest\n\t</p>\n\t<h2 " \
-                     "class=\'testing\'>\n\t\tHello World\n\t\t<h2>\n\t\t\tHello " \
-                     "World\n\t\t</h2>\n\t</h2>\n</div>\n</body>\n</html>"
+    string: str = HtmlElement.render_html(form)
+    assert string == "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    " \
+                     "<meta charset=\"UTF-8\">\n</head>\n<body><form " \
+                     "method=\'post\' action=\'login.php\'>\n\t<h3>\n\t\tLog " \
+                     "in\n\t</h3>\n\t<hr>\n\t\t\n\t<table>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t<label for=\'email\' " \
+                     "class=\'my-label\'>\n\t\t\t\t\tEmail: " \
+                     "\n\t\t\t\t</label>\n\t\t\t</td>\n\t\t\t<td>\n\t\t\t\t<input type=\'text\' name=\'email\' " \
+                     "id=\'email\'>\n\t\t\t\t\t\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t<label " \
+                     "for=\'password\' class=\'my-label\'>\n\t\t\t\t\tPassword: " \
+                     "\n\t\t\t\t</label>\n\t\t\t</td>\n\t\t\t<td>\n\t\t\t\t" \
+                     "<input type=\'password\' name=\'password\' " \
+                     "id=\'password\'>\n\t\t\t\t\t\n\t\t\t</td>\n\t\t</tr>\n\t</table>\n\t<br>\n\t\t\n\t<input " \
+                     "type=\'submit\' value=\'Log in\'>\n\t\t\n</form>\n</body>\n</html>"
 
 
 def test_find_by_tag() -> None:
-    array = HtmlElement.find_by_tag(root_element, "h2")
-    assert len(array) == 2
+    array = HtmlElement.find_by_tag(form, "input")
+    assert len(array) == 3
 
 
 def test_find_by_attribute() -> None:
-    array = HtmlElement.find_by_attribute(root_element, "class", "testing")
+    array = HtmlElement.find_by_attribute(form, "class", "my-label")
     assert len(array) == 2
