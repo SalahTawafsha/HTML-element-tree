@@ -23,9 +23,6 @@ br = HtmlElement("br", "")
 
 submit = HtmlElement("input", "", {"type": "submit", "value": "Log in"})
 
-HtmlElement.append(form, hr)
-HtmlElement.append(form, table)
-HtmlElement.append(form, br)
-HtmlElement.append(form, submit)
+HtmlElement.append(form, [hr, table, br, submit])
 
 print(HtmlElement.render_html(form))
