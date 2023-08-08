@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module html_element</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">html_element</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:d%3A%5Ctraining%5Chtml%5Csolution%5Chtml_element.py">d:\training\html\solution\html_element.py</a></td></tr></table>
+    <p><span class="code">class&nbsp;that&nbsp;represent&nbsp;nano&nbsp;HTML&nbsp;framework</span></p>
+<p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="html_element.html#HtmlElement">HtmlElement</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="HtmlElement">class <strong>HtmlElement</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#HtmlElement">HtmlElement</a>(name:&nbsp;str,&nbsp;value:&nbsp;Union[str,&nbsp;ForwardRef('<a href="#HtmlElement">HtmlElement</a>'),&nbsp;list['<a href="#HtmlElement">HtmlElement</a>']],&nbsp;attributes:&nbsp;dict&nbsp;=&nbsp;None)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+this&nbsp;class&nbsp;has&nbsp;name,&nbsp;attributes&nbsp;and&nbsp;children<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="HtmlElement-__init__"><strong>__init__</strong></a>(self, name: str, value: Union[str, ForwardRef('HtmlElement'), list['HtmlElement']], attributes: dict = None) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="HtmlElement-__str__"><strong>__str__</strong></a>(self) -&gt; str</dt><dd><span class="code">Return&nbsp;str(self).</span></dd></dl>
+
+<hr>
+Class methods defined here:<br>
+<dl><dt><a name="HtmlElement-append"><strong>append</strong></a>(element: 'HtmlElement', new_element: Union[ForwardRef('HtmlElement'), list['HtmlElement']]) -&gt; None<span class="grey"><span class="heading-text"> from <a href="builtins.html#type">builtins.type</a></span></span></dt><dd><span class="code">add&nbsp;new&nbsp;element&nbsp;to&nbsp;element&nbsp;as&nbsp;a&nbsp;child</span></dd></dl>
+
+<dl><dt><a name="HtmlElement-find_by_attribute"><strong>find_by_attribute</strong></a>(element: 'HtmlElement', attribute: str, value: str, result: list = None) -&gt; list<span class="grey"><span class="heading-text"> from <a href="builtins.html#type">builtins.type</a></span></span></dt><dd><span class="code">get&nbsp;all&nbsp;elements&nbsp;that&nbsp;has&nbsp;an&nbsp;attribute&nbsp;value</span></dd></dl>
+
+<dl><dt><a name="HtmlElement-find_by_tag"><strong>find_by_tag</strong></a>(element: 'HtmlElement', tag_name: str, result: list = None) -&gt; list<span class="grey"><span class="heading-text"> from <a href="builtins.html#type">builtins.type</a></span></span></dt><dd><span class="code">get&nbsp;all&nbsp;elements&nbsp;by&nbsp;tagName</span></dd></dl>
+
+<dl><dt><a name="HtmlElement-render"><strong>render</strong></a>(element: 'HtmlElement', level: int = 0) -&gt; str<span class="grey"><span class="heading-text"> from <a href="builtins.html#type">builtins.type</a></span></span></dt><dd><span class="code">print&nbsp;element&nbsp;tree&nbsp;as&nbsp;HTML&nbsp;string</span></dd></dl>
+
+<dl><dt><a name="HtmlElement-render_html"><strong>render_html</strong></a>(element: 'HtmlElement') -&gt; str<span class="grey"><span class="heading-text"> from <a href="builtins.html#type">builtins.type</a></span></span></dt><dd><span class="code">generate&nbsp;full&nbsp;HTML&nbsp;file&nbsp;that&nbsp;ready&nbsp;to&nbsp;run</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'tag_with_close': &lt;class 'set'&gt;, 'tag_without_close': &lt;class 'set'&gt;, 'usedIDs': &lt;class 'set'&gt;}</dl>
+
+<dl><dt><strong>tag_with_close</strong> = {'a', 'abbr', 'address', 'article', 'aside', 'audio', ...}</dl>
+
+<dl><dt><strong>tag_without_close</strong> = {'area', 'base', 'br', 'hr', 'img', 'input', ...}</dl>
+
+<dl><dt><strong>usedIDs</strong> = set()</dl>
+
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>Union</strong> = typing.Union</td></tr></table>
+</body></html>

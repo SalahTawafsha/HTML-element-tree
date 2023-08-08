@@ -1,2 +1,2 @@
 import pytest
-import solution
+import HTML.solution
