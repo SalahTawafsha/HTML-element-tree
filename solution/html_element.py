@@ -30,41 +30,8 @@ ALLOWED_VALUE_TYPE = Union[str, Self, list[Union[str, Self]], set[Union[str, Sel
 
 
 class HtmlElement:
-    """ this class has name, attributes and children"""
+    """ this class has name, attributes and children fields"""
 
-    @staticmethod
-    def __validate_input(value):
-        if isinstance(value, (str, HtmlElement, set, list, tuple)):
-            if isinstance(value, (list, set, tuple)):
-                for item in value:
-                    if not isinstance(item, (str, HtmlElement)):
-                        return False
-            return True
-        return False
-
-    def append_element(self, new_element: ALLOWED_VALUE_TYPE):
-        if not HtmlElement.__validate_input(new_element):
-            raise ValueError(
-                f"{type(new_element)} is not allowed for value, the allowed is {ALLOWED_VALUE_TYPE}")
-
-        if isinstance(new_element, HtmlElement):
-            if new_element.usedIDs.intersection(self.usedIDs):
-                raise DuplicatedIDError(str(new_element.usedIDs.intersection(self.usedIDs)))
-            self.usedIDs.update(new_element.usedIDs)
-            new_element.parent = self
-
-        self.children.append(new_element)
-        if isinstance(self.parent, HtmlElement):
-            HtmlElement.__append_new_ids_with_parents(self.parent, new_element.usedIDs)
-
-    @staticmethod
-    def __append_new_ids_with_parents(new_element: ALLOWED_VALUE_TYPE, new_ids):
-        if isinstance(new_element, HtmlElement):
-            if new_element.usedIDs.intersection(new_ids):
-                raise DuplicatedIDError(str(new_element.usedIDs.intersection(new_ids)))
-            new_element.usedIDs.update(new_ids)
-            if isinstance(new_element.parent, HtmlElement):
-                HtmlElement.__append_new_ids_with_parents(new_element.parent, new_ids)
     # tags into two sets based on whether they require a closing tag or not
     tag_with_close: set = {
         "a", "abbr", "address", "article", "aside", "audio", "b", "bdi", "bdo",
@@ -118,12 +85,20 @@ class HtmlElement:
         # generate open tag string with all attributes
         return HtmlElement.render(self)
 
-    def get_open_tag(self) -> str:
-        # generate open tag string with all attributes
-        string: str = f"<{self.name}"
-        for name, value in self.attributes.items():
-            string += f" {name}='{value}'"
-        return string + '>'
+    def __append_element(self, new_element: ALLOWED_VALUE_TYPE):
+        if not HtmlElement.__validate_input(new_element):
+            raise ValueError(
+                f"{type(new_element)} is not allowed for value, the allowed is {ALLOWED_VALUE_TYPE}")
+
+        if isinstance(new_element, HtmlElement):
+            if new_element.usedIDs.intersection(self.usedIDs):
+                raise DuplicatedIDError(str(new_element.usedIDs.intersection(self.usedIDs)))
+            self.usedIDs.update(new_element.usedIDs)
+            new_element.parent = self
+
+        self.children.append(new_element)
+        if isinstance(self.parent, HtmlElement):
+            HtmlElement.__append_new_ids_with_parents(self.parent, new_element.usedIDs)
 
     @classmethod
     def append(cls, element: HtmlElement,
@@ -141,11 +116,11 @@ class HtmlElement:
         if isinstance(new_element, (list, tuple, set)):
             for child in new_element:
                 if child != "":
-                    element.append_element(child)
+                    element.__append_element(child)
 
         else:
             if new_element != "":
-                element.append_element(new_element)
+                element.__append_element(new_element)
 
     @classmethod
     def render(cls, element: Union[HtmlElement, str], level: int = 0) -> str:
@@ -162,10 +137,10 @@ class HtmlElement:
 
         # print open tag or string that are child
         if isinstance(element, HtmlElement) and not element.children and element.name in cls.tag_with_close:
-            output += f"{element.get_open_tag()}</{element.name}>\n"
+            output += f"{element.__get_open_tag()}</{element.name}>\n"
             return output
         elif isinstance(element, HtmlElement):
-            output += f"{element.get_open_tag()}\n"
+            output += f"{element.__get_open_tag()}\n"
         else:
             output += f"{element}\n"
 
@@ -181,7 +156,7 @@ class HtmlElement:
         return output
 
     @classmethod
-    def render_html(cls, element: HtmlElement) -> str:
+    def render_html_file(cls, element: HtmlElement) -> str:
         """ generate full HTML file that ready to run """
 
         if not isinstance(element, (str, HtmlElement)):
@@ -259,3 +234,29 @@ class HtmlElement:
                 cls.find_elements(child, tag_name, attribute, value, result)
 
         return result
+
+    @staticmethod
+    def __validate_input(value):
+        if isinstance(value, (str, HtmlElement, set, list, tuple)):
+            if isinstance(value, (list, set, tuple)):
+                for item in value:
+                    if not isinstance(item, (str, HtmlElement)):
+                        return False
+            return True
+        return False
+
+    @staticmethod
+    def __append_new_ids_with_parents(new_element: ALLOWED_VALUE_TYPE, new_ids):
+        if isinstance(new_element, HtmlElement):
+            if new_element.usedIDs.intersection(new_ids):
+                raise DuplicatedIDError(str(new_element.usedIDs.intersection(new_ids)))
+            new_element.usedIDs.update(new_ids)
+            if isinstance(new_element.parent, HtmlElement):
+                HtmlElement.__append_new_ids_with_parents(new_element.parent, new_ids)
+
+    def __get_open_tag(self) -> str:
+        # generate open tag string with all attributes
+        string: str = f"<{self.name}"
+        for name, value in self.attributes.items():
+            string += f" {name}='{value}'"
+        return string + '>'

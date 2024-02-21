@@ -1,6 +1,6 @@
 """ unit test for HtmlElement class """
 import pytest
-from HTML.solution.html_element import DuplicatedIDError, InvalidTagError
+from solution.html_element import DuplicatedIDError, InvalidTagError
 from functools import partial
 from .html_element_examples import *
 
@@ -237,7 +237,7 @@ def test_render_for_empty_elements():
 
 def test_render_html(html_tree, form_render_html) -> None:
     """ test if render_html method works """
-    string: str = HtmlElement.render_html(html_tree)
+    string: str = HtmlElement.render_html_file(html_tree)
     assert string == form_render_html
 
 
